@@ -1,0 +1,13 @@
+﻿CREATE TABLE ToDo(
+	Id INT PRIMARY KEY NOT NULL IDENTITY,
+	Title NVARCHAR(50) NOT NULL,
+	[Description] NVARCHAR(MAX) NULL,
+	CategoryId INT FOREIGN KEY REFERENCES Category(Id) NULL,
+	DueDate DATE NULL,
+	[Status] NVARCHAR(10) CHECK ([Status] IN ('Not started', 'In progress', 'Completed')) DEFAULT 'Not started' NOT NULL
+)
+
+CREATE TABLE Category(
+	Id INT PRIMARY KEY NOT NULL IDENTITY,
+	[Name] NVARCHAR(15) NOT NULL
+)
