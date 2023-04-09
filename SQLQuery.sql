@@ -4,7 +4,7 @@
 	[Description] NVARCHAR(MAX) NULL,
 	CategoryId INT FOREIGN KEY REFERENCES Category(Id) NULL,
 	DueDate DATE NULL,
-	[Status] NVARCHAR(10) CHECK ([Status] IN ('Not started', 'In progress', 'Completed')) DEFAULT 'Not started' NOT NULL
+	[Status] NVARCHAR(15) CHECK ([Status] IN ('In progress', 'Completed')) DEFAULT 'In progress' NOT NULL
 )
 
 CREATE TABLE Category(

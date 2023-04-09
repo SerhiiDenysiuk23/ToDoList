@@ -1,6 +1,6 @@
-﻿using ToDoList.Models;
+﻿using Repositories.Models;
 
-namespace IRepositories
+namespace Repositories.IRepositories
 {
     public interface ICategoryRepository
     {

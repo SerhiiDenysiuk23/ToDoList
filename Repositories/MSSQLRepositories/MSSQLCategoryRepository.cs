@@ -1,8 +1,8 @@
 ﻿using Dapper;
-using IRepositories;
+using Repositories.IRepositories;
 using Microsoft.Data.SqlClient;
 using System.Data;
-using ToDoList.Models;
+using Repositories.Models;
 
 namespace Repositories.Repositories
 {

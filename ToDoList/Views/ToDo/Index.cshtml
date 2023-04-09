@@ -1,0 +1,58 @@
+﻿@{
+
+}
+
+@model ToDoList.Models.ToDoListModel
+
+
+<form method="post" action="/ToDo/Create">
+    <input name="Title" type="text" placeholder="Title" />
+    <textarea name="Description" placeholder="Description"></textarea>
+    <input name="DueDate" type="date" />
+    <select name="CategoryId">
+        <option value="null">No Choice</option>
+        @foreach (var item in @Model.Categories)
+        {
+            <option value="@item.Id">@item.Name</option>
+        }
+    </select>
+    <input type="submit" />
+</form>
+
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Due Date</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @Model.ToDoList)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Description</td>
+                <td>@item.DueDate</td>
+                <td>@item.Category?.Name</td>
+                <td>
+                    <form method="post" action="/ToDo/ChangeStatus">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit">@item.Status</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="post" action="/ToDo/Delete">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

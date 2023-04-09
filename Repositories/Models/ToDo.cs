@@ -1,4 +1,4 @@
-﻿namespace ToDoList.Models
+﻿namespace Repositories.Models
 {
     public class ToDo
     {

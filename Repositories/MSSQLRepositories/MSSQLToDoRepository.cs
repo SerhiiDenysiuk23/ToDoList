@@ -1,13 +1,8 @@
 ﻿using Dapper;
-using IRepositories;
+using Repositories.IRepositories;
 using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ToDoList.Models;
+using Repositories.Models;
 
 namespace Repositories.Repositories
 {
@@ -30,12 +25,13 @@ namespace Repositories.Repositories
                 try
                 {
 
-                    return (await connection.QueryAsync<ToDo>(sqlQuery, new{ 
+                    toDo = (await connection.QueryAsync<ToDo>(sqlQuery, new{ 
                         Title = toDo.Title, 
                         Description = toDo.Description, 
-                        CategoryId = toDo.Category.Id, 
+                        CategoryId = toDo.CategoryId, 
                         DueDate = toDo.DueDate
                     })).Single();
+                    return toDo;
                 }
                 catch (SqlException ex)
                 {
@@ -101,8 +97,8 @@ namespace Repositories.Repositories
                     "Title = @Title, " +
                     "Description = @Description, " +
                     "CategoryId = @CategoryId, " +
-                    "DueDate = @DueDate" +
-                    "Status = @Status" +
+                    "DueDate = @DueDate, " +
+                    "Status = @Status " +
                     "WHERE Id = @Id";
                 try
                 {
