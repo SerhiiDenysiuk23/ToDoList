@@ -1,7 +1,18 @@
+
+using Repositories.Repositories;
+using IRepositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+string conn = builder.Configuration.GetConnectionString("MSSQLConnString");
+
+builder.Services.AddSingleton<IToDoRepository>(provider => new MSSQLToDoRepository(conn));
+builder.Services.AddSingleton<ICategoryRepository>(provider => new MSSQLCategoryRepository(conn));
+
+
 
 var app = builder.Build();
 
