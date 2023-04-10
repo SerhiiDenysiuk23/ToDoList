@@ -17,7 +17,7 @@ namespace Repositories.Repositories
 
         public async Task<ToDo> Create(ToDo toDo)
         {
-            using(IDbConnection connection = new SqlConnection(connectionString))
+            using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 var sqlQuery = "INSERT INTO ToDo (Title, Description, CategoryId, DueDate) " +
                     "VALUES(@Title, @Description, @CategoryId, @DueDate); " +
@@ -25,10 +25,11 @@ namespace Repositories.Repositories
                 try
                 {
 
-                    toDo = (await connection.QueryAsync<ToDo>(sqlQuery, new{ 
-                        Title = toDo.Title, 
-                        Description = toDo.Description, 
-                        CategoryId = toDo.CategoryId, 
+                    toDo = (await connection.QueryAsync<ToDo>(sqlQuery, new
+                    {
+                        Title = toDo.Title,
+                        Description = toDo.Description,
+                        CategoryId = toDo.CategoryId,
                         DueDate = toDo.DueDate
                     })).Single();
                     return toDo;
@@ -78,14 +79,27 @@ namespace Repositories.Repositories
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 var sqlQuery = "SELECT t.*, c.* FROM ToDo t LEFT JOIN Category c ON t.CategoryId = c.Id";
+
                 try
                 {
-                    var todo = (await connection.QueryAsync<ToDo>(sqlQuery)).ToList();
+                    var todo = (await connection.QueryAsync<ToDo, Category, ToDo>(
+                        sqlQuery,
+                        (todo, category) =>
+                        {
+                            todo.Category = category;
+                            return todo;
+                        },
+                        splitOn: "Id"
+                    )).ToList();
                     return todo;
                 }
                 catch (SqlException ex)
                 {
                     throw new Exception("Error to get list", ex);
+                }
+                catch(Exception ex)
+                {
+                    throw new Exception(ex.Message);
                 }
             }
         }
