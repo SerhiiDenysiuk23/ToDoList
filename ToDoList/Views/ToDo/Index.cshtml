@@ -39,7 +39,7 @@
                 <td>@item.Title</td>
                 <td>@item.Description</td>
                 <td>@item.DueDate</td>
-                <td>@item.Category?.Name</td>
+                <td>@(item.Category != null ? item.Category.Name : "NO CATEGORY")</td>
                 <td>
                     <form method="post" action="/ToDo/ChangeStatus">
                         <input type="hidden" name="id" value="@item.Id" />

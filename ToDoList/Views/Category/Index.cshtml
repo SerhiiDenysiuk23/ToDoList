@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Repositories.Models.Category>
+
+
+<form method="post" action="/Category/Create">
+    <input name="Name" type="text" placeholder="Name"/>
+    <button type="submit">Create</button>
+</form>
+
+<ul>
+    @foreach (var item in @Model)
+    {
+        <li>
+            @item.Name
+            <form style="display:inline-block" method="post" action="/Category/Delete">
+                <button name="id" value="@item.Id" type="submit">Delete</button>
+            </form>
+        </li>
+    }
+</ul>

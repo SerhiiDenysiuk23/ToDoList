@@ -11,3 +11,7 @@ CREATE TABLE Category(
 	Id INT PRIMARY KEY NOT NULL IDENTITY,
 	[Name] NVARCHAR(15) NOT NULL
 )
+
+select * from ToDo
+
+SELECT t.*, c.* FROM ToDo t LEFT JOIN Category c ON t.CategoryId = c.Id

@@ -80,7 +80,8 @@ namespace Repositories.Repositories
                 var sqlQuery = "SELECT t.*, c.* FROM ToDo t LEFT JOIN Category c ON t.CategoryId = c.Id";
                 try
                 {
-                    return (await connection.QueryAsync<ToDo>(sqlQuery)).ToList();
+                    var todo = (await connection.QueryAsync<ToDo>(sqlQuery)).ToList();
+                    return todo;
                 }
                 catch (SqlException ex)
                 {
