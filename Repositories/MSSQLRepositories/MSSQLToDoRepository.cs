@@ -65,7 +65,16 @@ namespace Repositories.Repositories
                 var sqlQuery = "SELECT t.*, c.* FROM ToDo t LEFT JOIN Category c ON t.CategoryId = c.Id where t.Id = @Id";
                 try
                 {
-                    return (await connection.QueryAsync<ToDo>(sqlQuery, new { Id = id })).Single();
+                    return (await connection.QueryAsync<ToDo, Category, ToDo>(
+                        sqlQuery,
+                        (todo, category) =>
+                        {
+                            todo.Category = category;
+                            return todo;
+                        },
+                        splitOn: "Id", 
+                        param: new { Id = id}
+                        )).Single();
                 }
                 catch (SqlException ex)
                 {
@@ -117,7 +126,7 @@ namespace Repositories.Repositories
                     "WHERE Id = @Id";
                 try
                 {
-                    var affectedRows = await connection.ExecuteAsync(sqlQuery, toDo);
+                    var affectedRows = await connection.ExecuteAsync(sqlQuery, new { Id = toDo.Id, Status = toDo.Status });
                     if (affectedRows > 0)
                         return toDo;
                     throw new Exception("Error to update item");
@@ -126,8 +135,9 @@ namespace Repositories.Repositories
                 {
                     throw new Exception("Error to get list", ex);
                 }
-                catch (Exception ex) { 
-                    throw new Exception(ex.Message); 
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
                 }
             }
         }
