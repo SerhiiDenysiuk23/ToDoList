@@ -97,7 +97,7 @@ namespace Repositories.Repositories
                 {
                     throw new Exception("Error to get list", ex);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     throw new Exception(ex.Message);
                 }
@@ -109,10 +109,10 @@ namespace Repositories.Repositories
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 var sqlQuery = "UPDATE ToDo SET " +
-                    "Title = @Title, " +
-                    "Description = @Description, " +
-                    "CategoryId = @CategoryId, " +
-                    "DueDate = @DueDate, " +
+                    //"Title = @Title, " +
+                    //"Description = @Description, " +
+                    //"CategoryId = @CategoryId, " +
+                    //"DueDate = @DueDate, " +
                     "Status = @Status " +
                     "WHERE Id = @Id";
                 try
@@ -125,6 +125,9 @@ namespace Repositories.Repositories
                 catch (SqlException ex)
                 {
                     throw new Exception("Error to get list", ex);
+                }
+                catch (Exception ex) { 
+                    throw new Exception(ex.Message); 
                 }
             }
         }

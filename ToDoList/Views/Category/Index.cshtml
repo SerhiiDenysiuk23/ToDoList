@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<Repositories.Models.Category>
 
 
-<form method="post" action="/Category/Create">
+<form class="createForm" method="post" action="/Category/Create">
     <input name="Name" type="text" placeholder="Name"/>
     <button type="submit">Create</button>
 </form>
 
-<ul>
+<ul class="categories">
     @foreach (var item in @Model)
     {
         <li>
