@@ -7,7 +7,6 @@ namespace ToDoList.Controllers
     public class CategoryController : Controller
     {
         private ICategoryRepository _repository;
-
         public CategoryController(ICategoryRepository repository)
         {
             _repository = repository;

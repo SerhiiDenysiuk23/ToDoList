@@ -29,12 +29,6 @@ td, th {
     text-align: center;
 }
 
-
-header{
-    margin-bottom: 50px;
-}
-
-
 .createForm{
     margin: auto;
     width: fit-content;
@@ -51,9 +45,17 @@ tbody tr:nth-child(odd) {
     background: #eee;
 }
 
+
+header {
+    margin-bottom: 50px;
+    background: black;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px
+}
+
 nav ul {
     padding: 0;
-    background: black;
     font-family: Arial, sans serif;
     font-size: 12px;
     text-transform: uppercase;
@@ -77,4 +79,10 @@ nav a {
 }
 .categories li{
     width: fit-content;
+}
+
+.switcher{
+    padding: 10px;
+    display: inline-block;
+    height: fit-content;
 }

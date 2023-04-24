@@ -1,5 +1,8 @@
 
-using Repositories.Repositories;
+using Repositories.MSSQLRepositories;
+using Repositories.XMLRepositories;
+using ToDoList.Flags;
+using ToDoList.Enums;
 using Repositories.IRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,9 +11,24 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 string conn = builder.Configuration.GetConnectionString("MSSQLConnString");
+string path = builder.Configuration.GetConnectionString("XMLPath");
 
-builder.Services.AddSingleton<IToDoRepository>(provider => new MSSQLToDoRepository(conn));
-builder.Services.AddSingleton<ICategoryRepository>(provider => new MSSQLCategoryRepository(conn));
+
+builder.Services.AddScoped<IToDoRepository>(provider => DBSwitchFlag.Flag switch
+    {
+        DataBases.SQL => new MSSQLToDoRepository(conn),
+        DataBases.XML => new XMLToDoRepository(path),
+        _ => new MSSQLToDoRepository(conn)
+    }
+    );
+
+builder.Services.AddScoped<ICategoryRepository>(provider => DBSwitchFlag.Flag switch
+    {
+        DataBases.SQL => new MSSQLCategoryRepository(conn),
+        DataBases.XML => new XMLCategoryRepository(path),
+        _ => new MSSQLCategoryRepository(conn)
+    }
+    );
 
 
 

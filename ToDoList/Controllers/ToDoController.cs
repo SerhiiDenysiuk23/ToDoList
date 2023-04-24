@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Repositories;
 using Repositories.IRepositories;
-using Repositories.Repositories;
+using Repositories.MSSQLRepositories;
 using Repositories.Models;
 using ToDoList.Models;
+
+using ToDoList.Enums;
+using ToDoList.Flags;
 
 namespace ToDoList.Controllers
 {
@@ -55,6 +58,13 @@ namespace ToDoList.Controllers
             toDo.Status = (toDo.Status == "Completed") ? "In progress" : "Completed";
             _ = await _toDoRep.Update(toDo);
 
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult ChangeFlag(DataBases flag)
+        {
+            DBSwitchFlag.Flag = flag;
             return RedirectToAction("Index");
         }
     }

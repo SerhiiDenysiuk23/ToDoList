@@ -4,7 +4,7 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using Repositories.Models;
 
-namespace Repositories.Repositories
+namespace Repositories.MSSQLRepositories
 {
     public class MSSQLToDoRepository : IToDoRepository
     {
