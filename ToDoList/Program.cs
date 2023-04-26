@@ -1,9 +1,13 @@
-
+using GraphQL.Server;
+using GraphQL.MicrosoftDI;
 using Repositories.MSSQLRepositories;
 using Repositories.XMLRepositories;
 using ToDoList.Flags;
 using ToDoList.Enums;
 using Repositories.IRepositories;
+using GraphQL;
+using ToDoList.GraphQL.GraphQLSchema;
+using GraphQL.Types;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +18,7 @@ string conn = builder.Configuration.GetConnectionString("MSSQLConnString");
 string path = builder.Configuration.GetConnectionString("XMLPath");
 
 
-builder.Services.AddScoped<IToDoRepository>(provider => DBSwitchFlag.Flag switch
+builder.Services.AddTransient<IToDoRepository>(provider => DBSwitchFlag.Flag switch
     {
         DataBases.SQL => new MSSQLToDoRepository(conn),
         DataBases.XML => new XMLToDoRepository(path),
@@ -22,13 +26,31 @@ builder.Services.AddScoped<IToDoRepository>(provider => DBSwitchFlag.Flag switch
     }
     );
 
-builder.Services.AddScoped<ICategoryRepository>(provider => DBSwitchFlag.Flag switch
+builder.Services.AddTransient<ICategoryRepository>(provider => DBSwitchFlag.Flag switch
     {
         DataBases.SQL => new MSSQLCategoryRepository(conn),
         DataBases.XML => new XMLCategoryRepository(path),
         _ => new MSSQLCategoryRepository(conn)
     }
     );
+
+builder.Services.AddCors(
+    builder => {
+        builder.AddPolicy("DefaultPolicy", option =>
+        {
+            option.AllowAnyMethod();
+            option.AllowAnyOrigin();
+            option.AllowAnyHeader();
+        });
+    }
+);
+
+builder.Services.AddGraphQL(config => config
+                .AddSystemTextJson()
+                .AddErrorInfoProvider(options => options.ExposeExceptionStackTrace = true)
+                .AddSchema<AppSchema>()
+                .AddGraphTypes(typeof(AppSchema).Assembly)
+                );
 
 
 
@@ -52,5 +74,9 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=ToDo}/{action=Index}/{id?}");
+
+app.UseGraphQL<ISchema>();
+
+app.UseGraphQLAltair();
 
 app.Run();
