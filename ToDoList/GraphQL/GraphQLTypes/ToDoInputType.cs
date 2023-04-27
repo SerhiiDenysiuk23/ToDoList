@@ -11,7 +11,7 @@ namespace ToDoList.GraphQL.GraphQLTypes
             Field<IdGraphType>("id");
             Field<NonNullGraphType<StringGraphType>>("title");
             Field<StringGraphType>("description");
-            Field<DateTimeGraphType>("duedate");
+            Field<DateTimeGraphType>("dueDate");
             Field<StringGraphType>("status");
             Field<IntGraphType>("categoryId");
         }
