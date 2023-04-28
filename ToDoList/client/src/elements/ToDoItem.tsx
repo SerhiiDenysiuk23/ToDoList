@@ -16,16 +16,16 @@ const ToDoItem: FC<{ item: ToDo }> = ({item}) => {
     }
 
     return (
-        <tr>
+        <tr className={item.status == "Completed" ? "todo-completed" : ""}>
             <td>{item.title}</td>
             <td>{item.description}</td>
-            <td>{item.dueDate}</td>
+            <td>{item.dueDate ? (new Date(item.dueDate)).toDateString() : ""}</td>
             <td>{item.category != null ? item.category.name : "NO CATEGORY"}</td>
             <td>
                 <button onClick={handleStatusButtonClick}>{item.status}</button>
             </td>
             <td>
-                <button onClick={handleDeleteButtonClick}>Delete</button>
+                <button className="delete-btn" onClick={handleDeleteButtonClick}>Delete</button>
             </td>
         </tr>
     );

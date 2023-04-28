@@ -32,11 +32,11 @@ const CategoryList = () => {
                 <input placeholder="Name" onChange={handleInputNameChange} type="text"/>
                 <button type="submit">Create</button>
             </form>
-            <ul>
+            <ul className="categories">
                 {
                     categoryList.map(item => <li key={item.id}>
                         <div>{item.name}</div>
-                        <button onClick={() =>{ handleDeleteButtonClick(item.id)}}>Delete</button>
+                        <button className="delete-btn" onClick={() =>{ handleDeleteButtonClick(item.id)}}>Delete</button>
                     </li>)
                 }
             </ul>

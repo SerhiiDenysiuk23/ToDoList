@@ -3,7 +3,7 @@ import {DataBases} from "../types/enums";
 
 const Header = () => {
     return (
-        <header>
+        <header className="header">
             <nav>
                 <ul>
                     <li><a href="/">ToDo</a></li>

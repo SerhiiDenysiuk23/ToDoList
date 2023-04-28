@@ -18,7 +18,11 @@ const fetchToDoListEpic: Epic = ($action: Observable<ReturnType<typeof fetchToDo
         ofType(fetchToDoListAction.type),
         mergeMap(() => from(request(toDoGetList)).pipe(
             map(response => {
-                return fetch_todo_list(response.data.toDoQuery.toDoGetList);
+                try {
+                    return fetch_todo_list(response.data.toDoQuery.toDoGetList);
+                } catch (e) {
+                    console.error(e)
+                }
             })
         ))
     )
@@ -38,7 +42,11 @@ const createToDoEpic: Epic = ($action: Observable<ReturnType<typeof createToDoAc
             } as ToDo
         })).pipe(
             map(response => {
-                return create_todo(response.data.toDoMutation.toDoCreate);
+                try {
+                    return create_todo(response.data.toDoMutation.toDoCreate);
+                } catch (e) {
+                    console.error(e)
+                }
             })
         ))
     )
@@ -53,11 +61,16 @@ const updateToDoEpic: Epic = ($action: Observable<ReturnType<typeof updateToDoAc
                 description: action.payload.description,
                 dueDate: action.payload.dueDate,
                 categoryId: action.payload.categoryId,
-                status: action.payload.status
+                status: action.payload.status,
+                category: action.payload.category
             } as ToDo
         })).pipe(
             map(response => {
-                return update_todo(response.data.toDoMutation.toDoUpdate);
+                try {
+                    return update_todo(response.data.toDoMutation.toDoUpdate);
+                } catch (e) {
+                    console.error(e)
+                }
             })
         ))
     )
@@ -69,7 +82,11 @@ const deleteToDoEpic: Epic = ($action: Observable<ReturnType<typeof deleteToDoAc
         mergeMap((action: PayloadAction<number>) => from(request(toDoDelete, {id: action.payload})).pipe(
             map(response => {
                 if (response.data.toDoMutation.toDoDelete)
-                    return delete_todo(action.payload);
+                    try {
+                        return delete_todo(action.payload);
+                    } catch (e) {
+                        console.error(e)
+                    }
             })
         ))
     )

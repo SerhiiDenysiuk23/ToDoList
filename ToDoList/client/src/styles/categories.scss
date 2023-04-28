@@ -1,0 +1,12 @@
+.categories{
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    width: 300px;
+  }
+}

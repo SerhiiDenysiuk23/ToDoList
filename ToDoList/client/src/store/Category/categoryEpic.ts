@@ -17,7 +17,11 @@ const fetchCategoryListEpic: Epic = ($action: Observable<ReturnType<typeof fetch
         ofType(fetchCategoryListAction.type),
         mergeMap(() => from(request(categoryGetList)).pipe(
             map(response => {
-                return fetch_category_list(response.data.categoryQuery.categoryGetList);
+                try {
+                    return fetch_category_list(response.data.categoryQuery.categoryGetList);
+                } catch (e) {
+                    console.error(e)
+                }
             })
         ))
     )
@@ -33,7 +37,11 @@ const createCategoryEpic: Epic = ($action: Observable<ReturnType<typeof createCa
             } as Category
         })).pipe(
             map(response => {
-                return create_category(response.data.categoryMutation.categoryCreate);
+                try {
+                    return create_category(response.data.categoryMutation.categoryCreate);
+                } catch (e) {
+                    console.error(e)
+                }
             })
         ))
     )
@@ -44,8 +52,12 @@ const deleteCategoryEpic: Epic = ($action: Observable<ReturnType<typeof deleteCa
         ofType(deleteCategoryAction.type),
         mergeMap((action: PayloadAction<number>) => from(request(categoryDelete, {id: action.payload})).pipe(
             map(response => {
-                if (response.data.categoryMutation.categoryDelete)
-                    return delete_category(action.payload);
+                try {
+                    if (response.data.categoryMutation.categoryDelete)
+                        return delete_category(action.payload);
+                }catch (e){
+                    console.error(e)
+                }
             })
         ))
     )

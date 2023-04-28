@@ -1,0 +1,25 @@
+@import "variables";
+
+.todo-list-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 20px;
+  th, td{
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid $border-color;
+  }
+  th {
+    background-color: $primary-color;
+    color: white;
+  }
+  tbody tr:hover {
+    background-color: $hover-table-row-color;
+  }
+  .todo-completed{
+    background: $completed-table-row-color;
+    &:hover{
+      background: $completed-hover-table-row-color;
+    }
+  }
+}
