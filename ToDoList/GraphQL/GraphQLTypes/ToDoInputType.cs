@@ -14,6 +14,7 @@ namespace ToDoList.GraphQL.GraphQLTypes
             Field<DateTimeGraphType>("dueDate");
             Field<StringGraphType>("status");
             Field<IntGraphType>("categoryId");
+            Field<CategoryInputType>("category");
         }
     }
 }

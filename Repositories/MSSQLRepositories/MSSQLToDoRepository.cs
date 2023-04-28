@@ -87,7 +87,13 @@ namespace Repositories.MSSQLRepositories
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                var sqlQuery = "SELECT t.*, c.* FROM ToDo t LEFT JOIN Category c ON t.CategoryId = c.Id";
+                var sqlQuery = "SELECT t.*, c.* "+
+                    "FROM ToDo t "+
+                    "LEFT JOIN Category c ON t.CategoryId = c.Id "+
+                    "ORDER BY " +
+                    "CASE WHEN t.[Status] = 'In progress' THEN 0 ELSE 1 END, " +
+                    "CASE WHEN t.[DueDate] IS NULL THEN 1 ELSE 0 END, " +
+                    "t.[DueDate]";
 
                 try
                 {
