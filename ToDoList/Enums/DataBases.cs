@@ -2,7 +2,7 @@
 {
     public enum DataBases
     {
-        SQL = 1,
-        XML = 2
+        SQL,
+        XML
     }
 }

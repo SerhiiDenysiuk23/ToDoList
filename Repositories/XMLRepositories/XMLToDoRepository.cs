@@ -55,6 +55,7 @@ namespace Repositories.XMLRepositories
                     new XElement("Status", toDo.Status),
                     new XElement("CategoryId", toDo.CategoryId)
                 ));
+
             try
             {
                 doc.Save(_filePath);
@@ -62,6 +63,23 @@ namespace Repositories.XMLRepositories
             catch (Exception ex)
             {
                 throw new Exception($"Failed to save XML to {_filePath}.", ex);
+            }
+
+
+            if (toDo.CategoryId != null)
+            {
+                XElement categoryList = doc.Element("Data")?.Element("CategoryList");
+                if (categoryList == null)
+                {
+                    throw new Exception($"The 'CategoryList' element is not found in {_filePath}.");
+                }
+
+                var category = categoryList.Elements("Category").FirstOrDefault(t => t.Attribute("Id").Value == toDo.CategoryId.ToString());
+                toDo.Category = new Category
+                {
+                    Id = int.Parse(category.Attribute("Id").Value),
+                    Name = category.Element("Name").Value
+                };
             }
 
             return toDo;

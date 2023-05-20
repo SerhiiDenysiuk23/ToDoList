@@ -1,15 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Repositories;
 using Repositories.IRepositories;
 using Repositories.Models;
+using ToDoList.Flags;
 
 namespace ToDoList.Controllers
 {
     public class CategoryController : Controller
     {
         private ICategoryRepository _repository;
-        public CategoryController(ICategoryRepository repository)
+        //public CategoryController(ICategoryRepository repository)
+        //{
+        //    _repository = repository;
+        //}
+        public CategoryController(RepositoryFactory factory)
         {
-            _repository = repository;
+            _repository = factory.CategoryCreate(DBSwitchFlag.Flag.ToString());
         }
 
         public async Task<IActionResult> Index()

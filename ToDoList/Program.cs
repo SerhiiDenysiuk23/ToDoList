@@ -8,8 +8,12 @@ using Repositories.IRepositories;
 using GraphQL;
 using ToDoList.GraphQL.GraphQLSchema;
 using GraphQL.Types;
+using Repositories;
+using ToDoList.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHttpContextAccessor();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -18,21 +22,26 @@ string conn = builder.Configuration.GetConnectionString("MSSQLConnString");
 string path = builder.Configuration.GetConnectionString("XMLPath");
 
 
-builder.Services.AddTransient<IToDoRepository>(provider => DBSwitchFlag.Flag switch
-    {
-        DataBases.SQL => new MSSQLToDoRepository(conn),
-        DataBases.XML => new XMLToDoRepository(path),
-        _ => new MSSQLToDoRepository(conn)
-    }
-    );
+builder.Services.AddSingleton<RepositoryFactory>(new RepositoryFactory(conn, path));
 
-builder.Services.AddTransient<ICategoryRepository>(provider => DBSwitchFlag.Flag switch
-    {
-        DataBases.SQL => new MSSQLCategoryRepository(conn),
-        DataBases.XML => new XMLCategoryRepository(path),
-        _ => new MSSQLCategoryRepository(conn)
-    }
-    );
+builder.Services.AddSingleton<RepositoryService>(new RepositoryService(conn, path));
+
+
+//builder.Services.AddTransient<IToDoRepository>(provider => DBSwitchFlag.Flag switch
+//    {
+//        DataBases.SQL => new MSSQLToDoRepository(conn),
+//        DataBases.XML => new XMLToDoRepository(path),
+//        _ => new MSSQLToDoRepository(conn)
+//    }
+//    );
+
+//builder.Services.AddTransient<ICategoryRepository>(provider => DBSwitchFlag.Flag switch
+//    {
+//        DataBases.SQL => new MSSQLCategoryRepository(conn),
+//        DataBases.XML => new XMLCategoryRepository(path),
+//        _ => new MSSQLCategoryRepository(conn)
+//    }
+//    );
 
 builder.Services.AddCors(
     builder => {

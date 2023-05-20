@@ -50,12 +50,14 @@ const createCategoryEpic: Epic = ($action: Observable<ReturnType<typeof createCa
 const deleteCategoryEpic: Epic = ($action: Observable<ReturnType<typeof deleteCategoryAction>>) => {
     return $action.pipe(
         ofType(deleteCategoryAction.type),
-        mergeMap((action: PayloadAction<number>) => from(request(categoryDelete, {id: action.payload})).pipe(
+        mergeMap((action: PayloadAction<number>) => from(request(categoryDelete, {
+            id: action.payload
+        })).pipe(
             map(response => {
                 try {
                     if (response.data.categoryMutation.categoryDelete)
                         return delete_category(action.payload);
-                }catch (e){
+                } catch (e) {
                     console.error(e)
                 }
             })

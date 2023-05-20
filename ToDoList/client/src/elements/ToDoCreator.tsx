@@ -48,6 +48,7 @@ const ToDoCreator = () => {
             <select onChange={handleSelectCategoryChange}>
                 <option value="null">No Choice</option>
                 {
+                    !!categoryList &&
                     categoryList.map(item =>
                         <option
                             key={item.id}

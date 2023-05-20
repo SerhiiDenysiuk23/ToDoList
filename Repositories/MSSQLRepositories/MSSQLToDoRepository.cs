@@ -25,13 +25,23 @@ namespace Repositories.MSSQLRepositories
                 try
                 {
 
-                    toDo = (await connection.QueryAsync<ToDo>(sqlQuery, new
-                    {
-                        Title = toDo.Title,
-                        Description = toDo.Description,
-                        CategoryId = toDo.CategoryId,
-                        DueDate = toDo.DueDate
-                    })).Single();
+                    toDo = (await connection.QueryAsync<ToDo, Category, ToDo>(
+                        sqlQuery,
+                        (todo, category) =>
+                        {
+                            todo.Category = category;
+                            return todo;
+                        },
+
+                        new
+                        {
+                            Title = toDo.Title,
+                            Description = toDo.Description,
+                            CategoryId = toDo.CategoryId,
+                            DueDate = toDo.DueDate
+                        },
+                        splitOn: "Id"
+                    )).Single();
                     return toDo;
                 }
                 catch (SqlException ex)
@@ -72,8 +82,8 @@ namespace Repositories.MSSQLRepositories
                             todo.Category = category;
                             return todo;
                         },
-                        splitOn: "Id", 
-                        param: new { Id = id}
+                        splitOn: "Id",
+                        param: new { Id = id }
                         )).Single();
                 }
                 catch (SqlException ex)
@@ -87,9 +97,9 @@ namespace Repositories.MSSQLRepositories
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                var sqlQuery = "SELECT t.*, c.* "+
-                    "FROM ToDo t "+
-                    "LEFT JOIN Category c ON t.CategoryId = c.Id "+
+                var sqlQuery = "SELECT t.*, c.* " +
+                    "FROM ToDo t " +
+                    "LEFT JOIN Category c ON t.CategoryId = c.Id " +
                     "ORDER BY " +
                     "CASE WHEN t.[Status] = 'In progress' THEN 0 ELSE 1 END, " +
                     "CASE WHEN t.[DueDate] IS NULL THEN 1 ELSE 0 END, " +

@@ -18,10 +18,15 @@ namespace ToDoList.Controllers
         private List<ToDo> toDoList;
         private IEnumerable<Category> categoryList;
 
-        public ToDoController(IToDoRepository toDoRep, ICategoryRepository categoryRep)
+        //public ToDoController(IToDoRepository toDoRep, ICategoryRepository categoryRep)
+        //{
+        //    _toDoRep = toDoRep;
+        //    _categoryRep = categoryRep;
+        //}
+        public ToDoController(RepositoryFactory factory)
         {
-            _toDoRep = toDoRep;
-            _categoryRep = categoryRep;
+            _toDoRep = factory.ToDoRepCreate(DBSwitchFlag.Flag.ToString());
+            _categoryRep = factory.CategoryCreate(DBSwitchFlag.Flag.ToString());
         }
 
 

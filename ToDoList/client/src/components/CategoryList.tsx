@@ -9,6 +9,7 @@ const CategoryList = () => {
     const [category, setCategory] = useState<Category>(EmptyCategory)
 
     const dispatch = useDispatch()
+
     const handleDeleteButtonClick = (id: number): void => {
         dispatch(deleteCategoryAction(id))
     }
@@ -20,6 +21,7 @@ const CategoryList = () => {
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         dispatch(createCategoryAction(category))
+        setCategory(EmptyCategory)
     }
 
     useEffect(() => {
@@ -29,11 +31,12 @@ const CategoryList = () => {
     return (
         <section>
             <form onSubmit={handleFormSubmit}>
-                <input placeholder="Name" onChange={handleInputNameChange} type="text"/>
+                <input value={category.name} placeholder="Name" onChange={handleInputNameChange} type="text"/>
                 <button type="submit">Create</button>
             </form>
             <ul className="categories">
                 {
+                    !!categoryList &&
                     categoryList.map(item => <li key={item.id}>
                         <div>{item.name}</div>
                         <button className="delete-btn" onClick={() =>{ handleDeleteButtonClick(item.id)}}>Delete</button>

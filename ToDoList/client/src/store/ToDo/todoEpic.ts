@@ -79,7 +79,9 @@ const updateToDoEpic: Epic = ($action: Observable<ReturnType<typeof updateToDoAc
 const deleteToDoEpic: Epic = ($action: Observable<ReturnType<typeof deleteToDoAction>>) => {
     return $action.pipe(
         ofType(deleteToDoAction.type),
-        mergeMap((action: PayloadAction<number>) => from(request(toDoDelete, {id: action.payload})).pipe(
+        mergeMap((action: PayloadAction<number>) => from(request(toDoDelete, {
+            id: action.payload
+        })).pipe(
             map(response => {
                 if (response.data.toDoMutation.toDoDelete)
                     try {

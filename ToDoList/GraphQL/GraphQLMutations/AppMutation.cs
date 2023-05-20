@@ -15,11 +15,11 @@ namespace ToDoList.GraphQL.GraphQLMutations
                 .Resolve(_ => new { });
 
             Field<StringGraphType>("ChangeDB")
-                .Argument<EnumerationGraphType<DataBases>>("dbSwitchFlag")
+                .Argument<StringGraphType>("dbSwitchFlag")
                 .Resolve(context =>
                 {
-                    DataBases flag = context.GetArgument<DataBases>("dbSwitchFlag");
-                    DBSwitchFlag.Flag = flag;
+                    string flag = context.GetArgument<string>("dbSwitchFlag");
+                    DBSwitchFlag.Flag = Enum.Parse<DataBases>(flag);
                     return DBSwitchFlag.Flag.ToString();
                 });
         }
